@@ -45,6 +45,10 @@ params:
   # 多个作者写法
   author: ["杨浩天"]
 
+  # 网站开始运营时间
+  since: '2025-03-09'
+  showTimedata: true
+
   # OpenGraph / Twitter Card 预览图片（/static 下面的文件名称）
   images: ['opengraph.webp']
   # 日期格式
@@ -121,6 +125,7 @@ params:
     defaultIssueLabels: ['Gitalk', 'Comment']
     # 评论框默认分配给谁
     defaultIssueAssignees: ['']
+
 
   assets:
     # disableHLJS: true # to disable highlight.js
