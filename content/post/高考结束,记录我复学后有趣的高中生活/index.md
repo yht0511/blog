@@ -16,13 +16,13 @@ draft: false
 
   去学校之前我相当焦虑，毕竟一年里整天就只是在书房用电脑，不过事实证明这担心是完全多余的，因为大家都挺友善，而且我只去学校上了一天，就因为疫情开始网课了...还意外接触了感染者，被隔离了几天，吃上了国家饭：
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222456.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310081956.jpeg)
 
   隔离结束之后，就是大家都喜闻乐见的网课环节了，，，我们班当时数学在讲圆锥曲线，而且几乎已把椭圆讲完了，于是只留下我瞪着a,b,c不知所措。当然，我怎么可能因为这种小事犯难，写了个程序挂课就干别的了（笑）
 
 ### 导航仪和钉钉
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222821.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082002.jpeg)
 
 （Kindle改造为导航仪）
 
@@ -30,7 +30,7 @@ draft: false
 
   那会儿主要就搞这些好玩的，挂课时程序搞个虚拟摄像头，让钉钉啥的软件连接，老师那边连，就是几个动着的大字“摸鱼中...”，相当有意思。又比方说刷赞：
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222825.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082007.jpeg)
 
   这都不算多，只是很多照片找不到了。。。 
 
@@ -38,7 +38,7 @@ draft: false
 
   还有什么呢，当时看到学校网站，突发奇想，搞了个镜像站，取名为“世界盲流中学”。。。
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222831.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082011.jpeg)
 
   请注意，里面所有我们学校的名字都被批量替换为“盲流中学”（笑）连交大都变成了“盲大”。。。
 
@@ -46,17 +46,17 @@ draft: false
 
   好吧我有时候也会干点正事，比方说clibrary，使用爬虫搞到zlib的图书数据，保存到本地nas上，建了个网站方便大家使用
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222832.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082013.jpeg)
 
 这个项目是复学前开始的，一直维护到23年3月左右。
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222852.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082026.jpeg)
 
 23年初对网站整体进行更新，因为实在无法让底下这玩意承担这么大的使用量（每月30万ip）：
 
 
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222858.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082023.jpeg)
 
   不过再后来就没时间和精力维护它了，还是有点可惜。。。（好消息是我现在正在试图重启这个项目！）
 
@@ -64,7 +64,7 @@ draft: false
 
   还整了台服务器（r730xd),双路2698v3,24TB存储池
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222901.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082035.jpeg)
 
 ## 学考后(23.3-23.6)
 
@@ -84,29 +84,29 @@ draft: false
 
   我注意到出成绩还挺好玩的，看大家都排队在老师那苦苦等候,于是决定写程序！这就先得提到23年4月的另一个项目了，ChatGPT----那会儿这玩意进入大众视野，我也不例外地关注到它，并写了中转程序对接到QQ机器人：
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222907.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082039.jpeg)
 
   珍惜最初的gpt吧，谁能想到这玩意开始只是一个聊天的中转程序呢。。。
 
   回到上文，我发现大家查成绩的欲望极为强烈！于是搞定了智学网成绩查询！
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222909.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082044.jpeg)
 
   再往后这玩意就变得科幻了！
 
   首先几个月后增加/rank指令，可以查考试排名;后来支持询问gpt4和sd生图（不过有数量限制）；24年1月，new bing出来后支持连接到多模态GPT4，可以联网、生成图片、分析图片或文件...
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222911.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082048.jpeg)
 
   再后来，它支持查询之前任何一次考试的信息，包含分数排名小分等等，甚至可以查到阅卷老师是谁！
 
  放下帮助文本：
 
-​	![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222913.jpg)
+​	![](https://blog-cdn.yht.life/blog/2025/03/1020250310082053.jpeg)
 
-  ![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801223024.jpg)
+  ![](https://blog-cdn.yht.life/blog/2025/03/1020250310082055.jpeg)
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801223024-1.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082122.jpeg)
 
   总之，我也没想到最初的聊天程序会进化成这样。。。
 
@@ -120,7 +120,7 @@ draft: false
 
 ### 植物园与山
 
-  ![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222920.jpg)
+  ![](https://blog-cdn.yht.life/blog/2025/03/1020250310082059.jpeg)
 
   大家一起去植物园，在秦岭脚下转悠。学考结束了，高中生活还在继续。在这样无忧无虑的情形下，这个经历很难不被反复回忆。
 
@@ -134,7 +134,7 @@ draft: false
 
   没过多久又去爬山。配着yanni的never too late。从不太晚。
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222922.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082103.jpeg)
 
  ### 斗地主 
 
@@ -144,11 +144,11 @@ draft: false
 
   本来是极好的事，但就是老被班主任和年级主任搅局，气死我了。于是批量买了一堆，后来半个月才被完全收走，当然，年级主任的脸比猴屁股还红。
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801223003.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082101.jpeg)
 
   后来，我觉得这样也不是办法，于是动用了智慧，发明了世界上第一副A4赛博扑克：
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222926.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082106.jpeg)
 
   谁说我们在打牌？我们在对数据集进行博弈论分析！
 
@@ -166,17 +166,17 @@ draft: false
 
   下图为周日在学校自习的卷狗一只：
 
-  ![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222932.jpg)
+  ![](https://blog-cdn.yht.life/blog/2025/03/1020250310082135.jpeg)
 
   ### 化学
 
   那会儿也会享受（笑），比如说低价收了坏磁搅，修好之后用来喝茶：
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222934.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082227.jpeg)
 
   虽然磁搅不干正事，我也搞正经实验，比如制备、能材、x射线这种。就是爱好。
 
-  ![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222936.jpg)
+  ![](https://blog-cdn.yht.life/blog/2025/03/1020250310082142.jpeg)
 
  ## 23.10-24.6
 
@@ -190,7 +190,7 @@ draft: false
 
   别跑题，继续说恋爱。在荷尔蒙的作用下，一个理工书呆子终于做了人生中第一顿优雅的早餐：
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222938.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082200.jpeg)
 
   还有什么浪漫的呢，我们每天放学之后会牵着手走完教学楼到宿舍的小路，顺便看月亮。
 
@@ -202,11 +202,11 @@ draft: false
 
   放几张今年的照片：
 
-  ![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222940.jpg)
+  ![](https://blog-cdn.yht.life/blog/2025/03/1020250310082146.jpeg)
 
   （今年三月还翘了考试去郑州玩，爬了嵩山）
 
-![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222941.jpg)
+![](https://blog-cdn.yht.life/blog/2025/03/1020250310082209.jpeg)
 
  ### 朋友们 
 
@@ -232,12 +232,12 @@ draft: false
 
 24年，从楼顶花园俯瞰高中。
 
-  ![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222944.jpg)
+  ![](https://blog-cdn.yht.life/blog/2025/03/1020250310082212.jpeg)
 
 
 高考前几天，在大明宫与朋友划船。
 
-  ![](https://raw.githubusercontent.com/yht0511/ImgStorage/main/2024/08/0120240801222946.jpg)
+  ![](https://blog-cdn.yht.life/blog/2025/03/1020250310082217.jpeg)
 
  
 
