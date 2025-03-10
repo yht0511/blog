@@ -2,22 +2,34 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>测试 on yht.life</title>
-    <link>http://localhost:1313/categories/%E6%B5%8B%E8%AF%95/</link>
+    <link>https://yht.life/categories/%E6%B5%8B%E8%AF%95/</link>
     <description>Recent content in 测试 on yht.life</description>
     <image>
       <title>yht.life</title>
-      <url>http://localhost:1313/opengraph.webp</url>
-      <link>http://localhost:1313/opengraph.webp</link>
+      <url>https://yht.life/opengraph.webp</url>
+      <link>https://yht.life/opengraph.webp</link>
     </image>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 18 May 2022 18:07:59 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 Mar 2025 13:37:06 +0800</lastBuildDate>
+    <atom:link href="https://yht.life/categories/%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Test</title>
+      <link>https://yht.life/post/test/</link>
+      <pubDate>Mon, 10 Mar 2025 13:37:06 +0800</pubDate>
+      <guid>https://yht.life/post/test/</guid>
+      <description>&lt;h1 id=&#34;35rrgtr&#34;&gt;35rrgtr&lt;/h1&gt;
+&lt;p&gt;hb
+gfr
+bgrf
+bn
+gdfb&lt;/p&gt;</description>
+    </item>
     <item>
       <title>测试文件</title>
-      <link>http://localhost:1313/post/%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/</link>
+      <link>https://yht.life/post/%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/</link>
       <pubDate>Wed, 18 May 2022 18:07:59 +0800</pubDate>
-      <guid>http://localhost:1313/post/%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/</guid>
+      <guid>https://yht.life/post/%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/</guid>
       <description>&lt;h1 id=&#34;测试&#34;&gt;测试&lt;/h1&gt;
 &lt;hr&gt;
 &lt;p&gt;就像我说的那样,这是一个测试文件.&lt;/p&gt;

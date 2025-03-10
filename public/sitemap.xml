@@ -2,36 +2,39 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://yht.life/categories/</loc>
+    <lastmod>2025-03-10T13:37:06+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/post/</loc>
+    <lastmod>2025-03-10T13:37:06+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/post/test/</loc>
+    <lastmod>2025-03-10T13:37:06+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/</loc>
+    <lastmod>2025-03-10T13:37:06+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/categories/%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2025-03-10T13:37:06+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/post/%E9%AB%98%E8%80%83%E7%BB%93%E6%9D%9F%E8%AE%B0%E5%BD%95%E6%88%91%E5%A4%8D%E5%AD%A6%E5%90%8E%E6%9C%89%E8%B6%A3%E7%9A%84%E9%AB%98%E4%B8%AD%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2024-08-12T18:02:26+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/post/</loc>
+    <loc>https://yht.life/categories/%E9%AB%98%E4%B8%AD/</loc>
     <lastmod>2024-08-12T18:02:26+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://yht.life/categories/%E6%80%BB%E7%BB%93/</loc>
     <lastmod>2024-08-12T18:02:26+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/post/%E9%AB%98%E8%80%83%E7%BB%93%E6%9D%9F%E8%AE%B0%E5%BD%95%E6%88%91%E5%A4%8D%E5%AD%A6%E5%90%8E%E6%9C%89%E8%B6%A3%E7%9A%84%E9%AB%98%E4%B8%AD%E7%94%9F%E6%B4%BB/</loc>
-    <lastmod>2024-08-12T18:02:26+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E9%AB%98%E4%B8%AD/</loc>
-    <lastmod>2024-08-12T18:02:26+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E6%80%BB%E7%BB%93/</loc>
-    <lastmod>2024-08-12T18:02:26+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/%E6%B5%8B%E8%AF%95/</loc>
+    <loc>https://yht.life/post/%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/</loc>
     <lastmod>2022-05-18T18:07:59+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/post/%E6%B5%8B%E8%AF%95%E6%96%87%E4%BB%B6/</loc>
-    <lastmod>2022-05-18T18:07:59+08:00</lastmod>
+    <loc>https://yht.life/tags/</loc>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://yht.life/about/</loc>
   </url><url>
-    <loc>http://localhost:1313/about/</loc>
+    <loc>https://yht.life/archives/</loc>
   </url><url>
-    <loc>http://localhost:1313/archives/</loc>
-  </url><url>
-    <loc>http://localhost:1313/search/</loc>
+    <loc>https://yht.life/search/</loc>
   </url>
 </urlset>
