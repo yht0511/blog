@@ -8,3 +8,9 @@ Read https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#bundling-custom-cs
 * {
     font-family: 'LXGW WenKai Light';
 }
+
+/* 选择 */
+::selection {
+    background: #69ff9691;
+    color: #333;
+}
