@@ -25,9 +25,12 @@
             document.getElementById("timeDate").innerHTML = "网站已运行"+str;
         },100);
     </script>
-    <span id="timeDate">网站已运行</span>
-    <br/>
+    <span id="timeDate">已运行</span>
     {{- end }}
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    {{- print " · "}}<span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <br/>
 
     {{- if not site.Params.footer.hideCopyright }}
         {{- if site.Copyright }}
