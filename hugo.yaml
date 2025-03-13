@@ -200,7 +200,7 @@ params:
 
   # 关联编辑
   editPost:
-    URL: 'https://github.com/yht0511/blog/tree/main/content/'
+    URL: 'https://github.com/yht0511/blog/tree/main/content'
     Text: 'Edit on GitHub' # edit text
     appendFilePath: true # to append file path to Edit link
 
