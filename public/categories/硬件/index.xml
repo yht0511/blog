@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>硬件 on yht.life</title>
+    <link>https://yht.life/categories/%E7%A1%AC%E4%BB%B6/</link>
+    <description>Recent content in 硬件 on yht.life</description>
+    <image>
+      <title>yht.life</title>
+      <url>https://yht.life/opengraph.webp</url>
+      <link>https://yht.life/opengraph.webp</link>
+    </image>
+    <generator>Hugo -- 0.145.0</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 14 Mar 2025 20:54:26 +0800</lastBuildDate>
+    <atom:link href="https://yht.life/categories/%E7%A1%AC%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multisim仿真HM1-65642-883</title>
+      <link>https://yht.life/post/multisim%E4%BB%BF%E7%9C%9Fhm1-65642-883/</link>
+      <pubDate>Fri, 14 Mar 2025 20:54:26 +0800</pubDate>
+      <guid>https://yht.life/post/multisim%E4%BB%BF%E7%9C%9Fhm1-65642-883/</guid>
+      <description>&lt;h1 id=&#34;multisim仿真hm1-65642-883&#34;&gt;Multisim仿真HM1-65642-883&lt;/h1&gt;
+&lt;p&gt;这两天刚好在自学计组，打算从零开始搓计算机，ALU什么就不说了，稍微记录下RAM仿真。&lt;/p&gt;
+&lt;p&gt;两片65642相连拓展至16位；&lt;/p&gt;
+&lt;p&gt;注意到E1始终接地，E2接时钟，控制芯片使能。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

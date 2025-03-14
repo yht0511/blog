@@ -11,8 +11,18 @@
     </image>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 12 Aug 2024 18:02:26 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 14 Mar 2025 20:54:26 +0800</lastBuildDate>
     <atom:link href="https://yht.life/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multisim仿真HM1-65642-883</title>
+      <link>https://yht.life/post/multisim%E4%BB%BF%E7%9C%9Fhm1-65642-883/</link>
+      <pubDate>Fri, 14 Mar 2025 20:54:26 +0800</pubDate>
+      <guid>https://yht.life/post/multisim%E4%BB%BF%E7%9C%9Fhm1-65642-883/</guid>
+      <description>&lt;h1 id=&#34;multisim仿真hm1-65642-883&#34;&gt;Multisim仿真HM1-65642-883&lt;/h1&gt;
+&lt;p&gt;这两天刚好在自学计组，打算从零开始搓计算机，ALU什么就不说了，稍微记录下RAM仿真。&lt;/p&gt;
+&lt;p&gt;两片65642相连拓展至16位；&lt;/p&gt;
+&lt;p&gt;注意到E1始终接地，E2接时钟，控制芯片使能。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>高考结束,记录我复学后有趣的高中生活</title>
       <link>https://yht.life/post/%E9%AB%98%E8%80%83%E7%BB%93%E6%9D%9F%E8%AE%B0%E5%BD%95%E6%88%91%E5%A4%8D%E5%AD%A6%E5%90%8E%E6%9C%89%E8%B6%A3%E7%9A%84%E9%AB%98%E4%B8%AD%E7%94%9F%E6%B4%BB/</link>
