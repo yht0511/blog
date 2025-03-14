@@ -2,7 +2,7 @@
 title: "Multisim仿真HM1-65642-883"
 description: ""
 date: 2025-03-14T21:04:04+08:00
-lastmod: 2025-03-14T21:06:43+08:00
+lastmod: 2025-03-14T22:01:40+08:00
 categories: ["计算机","硬件","Multisim","自制计算机项目"]
 mermaid: true
 draft: false
@@ -20,7 +20,7 @@ WG逻辑相反（写入和读取）。
 
 ![RAM](https://blog-cdn.yht.life/blog/2025/03/1420250314204255.png)
 
-时钟信号来源于经典的NE555电路:
+时钟信号来源于经典的555电路:
 
 ![捕获](https://blog-cdn.yht.life/blog/2025/03/1420250314204815.PNG)
 
