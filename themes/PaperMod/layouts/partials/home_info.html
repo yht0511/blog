@@ -13,10 +13,11 @@
     {{- if site.Params.github.githubUsername -}}
     <br/>
     <div>Github</div>
-    <img id="github-chart" alt="Github chart" class="github-chart">
+    <img src="https://ghchart.rshah.org/{{ site.Params.github.githubUsername }}?t=" alt="Github chart" class="github-chart">
+    <!-- <img id="github-chart" alt="Github chart" class="github-chart">
     <script>
         document.getElementById('github-chart').src = `https://ghchart.rshah.org/{{ site.Params.github.githubUsername }}?t=${Date.now()}`;
-    </script>
+    </script> -->
     <!-- <hr> -->
     <!-- <img src="https://github-readme-stats.vercel.app/api?username={{ site.Params.github.githubUsername }}&count_private=true" alt="Github stats" class="github-stats"> -->
     {{- end -}}
