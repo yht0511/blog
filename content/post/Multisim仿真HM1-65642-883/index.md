@@ -2,13 +2,11 @@
 title: "Multisim仿真HM1-65642-883"
 description: ""
 date: 2025-03-14T21:04:04+08:00
-lastmod: 2025-03-14T21:04:04+08:00
+lastmod: 2025-03-14T21:06:43+08:00
 categories: ["计算机","硬件","Multisim","自制计算机项目"]
 mermaid: true
 draft: false
 ---
-
-# Multisim仿真HM1-65642-883
 
 这两天刚好在自学计组，打算从零开始搓计算机，ALU什么就不说了，稍微记录下RAM仿真。
 
