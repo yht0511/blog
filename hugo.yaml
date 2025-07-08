@@ -234,6 +234,10 @@ menu:
       name: '搜索'
       url: /search/
       weight: 30
+    - identifier: '友链'
+      name: '友链'
+      url: /friends/
+      weight: 20
     - identifier: '关于'
       name: '关于'
       url: /about/

@@ -11,8 +11,21 @@
     </image>
     <generator>Hugo -- 0.145.0</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 14 Mar 2025 22:01:40 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Jul 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://yht.life/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>友链</title>
+      <link>https://yht.life/friends/</link>
+      <pubDate>Tue, 08 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://yht.life/friends/</guid>
+      <description>&lt;h2 id=&#34;博客链接&#34;&gt;博客链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.cnblogs.com/-cchen-&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;蒻蒻虫的博客园&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;新增友链&#34;&gt;新增友链&lt;/h2&gt;
+&lt;p&gt;直接在评论区留言即可(&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Multisim仿真HM1-65642-883</title>
       <link>https://yht.life/post/multisim%E4%BB%BF%E7%9C%9Fhm1-65642-883/</link>
