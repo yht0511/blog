@@ -2,22 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://yht.life/categories/</loc>
+    <lastmod>2025-09-24T10:59:01+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/post/</loc>
+    <lastmod>2025-09-24T10:59:01+08:00</lastmod>
+  </url><url>
     <loc>https://yht.life/</loc>
-    <lastmod>2025-07-08T00:00:00+00:00</lastmod>
+    <lastmod>2025-09-24T10:59:01+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/categories/%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2025-09-24T10:59:01+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/categories/%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2025-09-24T10:59:01+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/post/%E8%B7%A8%E8%AE%BE%E5%A4%87%E5%90%8C%E6%AD%A5%E5%89%AA%E5%88%87%E6%9D%BF-syncclipboard-%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2025-09-24T10:59:01+08:00</lastmod>
+  </url><url>
+    <loc>https://yht.life/categories/%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2025-09-24T10:59:01+08:00</lastmod>
   </url><url>
     <loc>https://yht.life/friends/</loc>
     <lastmod>2025-07-08T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://yht.life/categories/</loc>
-    <lastmod>2025-03-14T22:01:40+08:00</lastmod>
   </url><url>
     <loc>https://yht.life/categories/multisim/</loc>
     <lastmod>2025-03-14T22:01:40+08:00</lastmod>
   </url><url>
     <loc>https://yht.life/post/multisim%E4%BB%BF%E7%9C%9Fhm1-65642-883/</loc>
-    <lastmod>2025-03-14T22:01:40+08:00</lastmod>
-  </url><url>
-    <loc>https://yht.life/post/</loc>
     <lastmod>2025-03-14T22:01:40+08:00</lastmod>
   </url><url>
     <loc>https://yht.life/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/</loc>
