@@ -5,6 +5,8 @@ import click
 import git
 import time
 import frontmatter
+import platform
+import subprocess
 from rich.console import Console
 from rich.table import Table
 
@@ -19,6 +21,43 @@ def check_hugo_installed():
         click.echo("Please install Hugo to use this tool.")
         click.echo("Installation instructions can be found at: https://gohugo.io/getting-started/installing/")
         sys.exit(1)
+
+def open_with_typora(filepath):
+    """Tries to open the given file with Typora across different OS."""
+    editor_path = None
+    system = platform.system()
+
+    if system == "Windows":
+        possible_paths = [
+            r"C:\Program Files\Typora\Typora.exe",
+            r"D:\Program Files\Typora\Typora.exe",
+            os.path.expanduser(r"~\AppData\Local\Programs\Typora\Typora.exe"),
+        ]
+        for path in possible_paths:
+            if os.path.exists(path):
+                editor_path = path
+                break
+    elif system == "Darwin": # macOS
+        # On macOS, 'open -a Typora' is the standard way.
+        try:
+            subprocess.run(["open", "-a", "Typora", filepath], check=True)
+            click.echo("Opened file with Typora.")
+            return
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            click.echo("Could not open with Typora automatically.", err=True)
+            
+    if editor_path:
+        try:
+            subprocess.Popen([editor_path, filepath])
+            click.echo(f"Opened file with Typora at {editor_path}.")
+            return
+        except Exception as e:
+            click.echo(f"Failed to open with Typora: {e}", err=True)
+    
+    click.echo(
+        click.style("Could not find Typora automatically.", fg="yellow")
+    )
+
 
 # --- Configuration ---
 # In a real application, this would be loaded from a config file.
@@ -95,16 +134,19 @@ def new(filepath):
         f_dest.write("\n" + content)
         
     click.echo(f"Content from {filepath} has been added.")
+    
+    # 3. Open with Typora
+    open_with_typora(index_md_path)
     click.echo(f"Please edit the post file to set the title: {index_md_path}")
     
-    # 3. Prompt user to confirm after editing
+    # 4. Prompt user to confirm after editing
     if not click.confirm("Have you finished editing and set the title?"):
         click.echo("Aborted.")
         # Clean up the created directory
         shutil.rmtree(new_post_path)
         return
 
-    # 4. Read the title and rename the directory
+    # 5. Read the title and rename the directory
     title = ""
     with open(index_md_path, "r", encoding='utf-8') as f:
         for line in f:
@@ -131,7 +173,7 @@ def new(filepath):
     os.rename(new_post_path, final_post_path)
     click.echo(f"Post renamed to '{safe_title}'.")
 
-    # 5. Run hugo, commit and push
+    # 6. Run hugo, commit and push
     click.echo("Running hugo build...")
     os.chdir(temp_dir)
     os.system('hugo')

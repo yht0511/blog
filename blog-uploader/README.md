@@ -44,9 +44,10 @@ The tool will:
 1. Clone or pull the latest version of your blog repository.
 2. Create a new post in Hugo.
 3. Append the content of your file to the new post's `index.md`.
-4. Prompt you to edit the file to set the title and other metadata.
-5. After you confirm, it will rename the post's folder based on the title.
-6. Build the site with Hugo, and commit and push the changes to your repository.
+4. **Automatically open the new file in Typora** for editing (if Typora is found).
+5. Prompt you to confirm after you have set the title and other metadata.
+6. After you confirm, it will rename the post's folder based on the title.
+7. Build the site with Hugo, and commit and push the changes to your repository.
 
 ### 2. Remove a Post
 
