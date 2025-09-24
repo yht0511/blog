@@ -7,6 +7,8 @@ import time
 import frontmatter
 import platform
 import subprocess
+import re
+import requests
 from rich.console import Console
 from rich.table import Table
 
@@ -32,6 +34,7 @@ def open_with_typora(filepath):
             r"C:\Program Files\Typora\Typora.exe",
             r"D:\Program Files\Typora\Typora.exe",
             os.path.expanduser(r"~\AppData\Local\Programs\Typora\Typora.exe"),
+            r"D:\Software\Typora\Typora.exe",
         ]
         for path in possible_paths:
             if os.path.exists(path):
@@ -100,6 +103,74 @@ def commit_and_push(repo_path, message):
         click.echo(f"Error during git operation: {e}", err=True)
         sys.exit(1)
 
+def upload_images_with_picgo(image_paths):
+    """Uploads images using the PicGo server API."""
+    url = "http://127.0.0.1:36677/upload"
+    try:
+        # PicGo's API expects a JSON payload with a 'list' of file paths
+        response = requests.post(url, json={"list": image_paths})
+        response.raise_for_status()
+        result = response.json()
+        if result.get("success"):
+            return result.get("result", [])
+        else:
+            click.echo(f"PicGo API Error: {result.get('message', 'Unknown error')}", err=True)
+            return []
+    except requests.exceptions.RequestException as e:
+        click.echo(f"Failed to connect to PicGo server at {url}. Is it running?", err=True)
+        click.echo(f"Error: {e}", err=True)
+        return []
+
+def preprocess_markdown_content(content, base_dir):
+    """Finds local images, uploads them via PicGo, and replaces links."""
+    # Regex to find markdown image links ![]() that are not web URLs
+    image_pattern = re.compile(r'!\[(.*?)\]\((?!https?://)(.*?)\)')
+    
+    original_paths = []
+    absolute_paths = []
+    
+    for match in image_pattern.finditer(content):
+        image_path = match.group(2)
+        original_paths.append(image_path)
+        
+        abs_path = image_path
+        if not os.path.isabs(abs_path):
+            abs_path = os.path.abspath(os.path.join(base_dir, image_path))
+        
+        if os.path.exists(abs_path):
+            absolute_paths.append(abs_path)
+        else:
+            click.echo(f"Warning: Image not found at {abs_path}", fg="yellow")
+
+    if not absolute_paths:
+        return content
+
+    click.echo(f"Found {len(absolute_paths)} local images to upload.")
+    uploaded_urls = upload_images_with_picgo(absolute_paths)
+
+    if not uploaded_urls or len(uploaded_urls) != len(absolute_paths):
+        click.echo("Image upload failed or returned incomplete results. Aborting.", err=True)
+        sys.exit(1)
+
+    # Create a map of original local path -> remote URL
+    path_to_url_map = dict(zip(original_paths, uploaded_urls))
+
+    # Replace local paths with remote URLs in the content
+    def replace_path(match):
+        original_path = match.group(2)
+        alt_text = match.group(1)
+        
+        remote_url = path_to_url_map.get(original_path)
+        if remote_url:
+            return f'![{alt_text}]({remote_url})'
+        else:
+            # Return original if something went wrong (e.g., file not found)
+            return match.group(0)
+
+    updated_content = image_pattern.sub(replace_path, content)
+    click.echo("Successfully replaced local image paths with remote URLs.")
+    return updated_content
+
 # --- CLI Commands ---
 
 @click.group()
@@ -113,6 +184,14 @@ def cli():
 def new(filepath):
     """Create a new blog post from a file."""
     temp_dir = get_temp_dir()
+
+    # 0. Preprocess the markdown file to upload images
+    click.echo("Preprocessing markdown file...")
+    with open(filepath, "r", encoding='utf-8') as f_src:
+        original_content = f_src.read()
+    
+    source_dir = os.path.dirname(os.path.abspath(filepath))
+    content = preprocess_markdown_content(original_content, source_dir)
     
     # 1. Create a new post using Hugo
     click.echo("Creating new post with Hugo...")
@@ -126,9 +205,6 @@ def new(filepath):
     os.chdir(original_cwd)
 
     # 2. Append content from the source file
-    with open(filepath, "r", encoding='utf-8') as f_src:
-        content = f_src.read()
-    
     index_md_path = os.path.join(new_post_path, "index.md")
     with open(index_md_path, "a", encoding='utf-8') as f_dest:
         f_dest.write("\n" + content)
