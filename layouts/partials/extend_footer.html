@@ -1,4 +1,4 @@
-<button id="unlock-secrets-btn">管理员</button>
+<button id="unlock-secrets-btn">管理员登录</button>
 
 <div id="secret-modal">
     <div id="secret-modal-content">
@@ -52,25 +52,57 @@
         (async function decryptContent() {
             const githubToken = localStorage.getItem('githubToken');
             const privateKey = localStorage.getItem('rsaPrivateKey');
-
+            console.log("Retrieved keys from localStorage:", {
+                githubToken: githubToken ? '***' : null,
+                privateKey: privateKey ? '***' : null
+            });
+            
+            // If keys are not present, make sure the login button is visible and stop.
             if (!githubToken || !privateKey) {
-                console.log("密钥未找到，无法解密。");
+                unlockBtn.style.display = 'inline-block';
                 return;
             }
 
+            // If keys are present, hide the login button.
+            unlockBtn.style.display = 'none';
+
             const placeholders = document.querySelectorAll('.secret-placeholder');
+            // If there's no secret content on this page, do nothing.
             if (placeholders.length === 0) {
                 return;
             }
 
-            const titleElement = document.querySelector('.post-title');
+            // If we have keys AND placeholders, create and show a status indicator.
+            const statusIndicator = document.createElement('span');
+            statusIndicator.id = 'secret-status';
+            statusIndicator.textContent = '正在解密...';
+            statusIndicator.style.marginLeft = '10px';
+            statusIndicator.style.padding = '8px 16px';
+            statusIndicator.style.borderRadius = 'var(--radius)';
+            statusIndicator.style.background = 'var(--tertiary)';
+            statusIndicator.style.color = 'var(--content)';
+            
+            // Insert the status indicator after the unlock button's original position
+            unlockBtn.parentNode.insertBefore(statusIndicator, unlockBtn.nextSibling);
+
+            let titleElement = document.querySelector('.post-title');
             if (!titleElement) {
-                console.log("文章标题未找到，无法确定私密文件名。");
+                const content = document.querySelector('.post-content');
+                if (content) {
+                    titleElement = content.querySelector('h1');
+                }
+            }
+            console.log("Located title element:", titleElement);
+
+            if (!titleElement) {
+                statusIndicator.textContent = '错误：找不到标题';
+                statusIndicator.style.color = 'red';
                 return;
             }
             const title = titleElement.textContent.trim();
             const titleHash = sha256(title);
             const secretFileName = `${titleHash}.json`;
+            console.log("Computed title hash and secret file name:", { titleHash, secretFileName });
 
             const url = `https://api.github.com/repos/yht0511/blog-secret/contents/${secretFileName}`;
 
@@ -88,7 +120,6 @@
 
                 const payload = await response.json();
 
-                // 1. Decrypt the AES session key with RSA
                 const decrypt = new JSEncrypt();
                 decrypt.setPrivateKey(privateKey);
                 const sessionKeyRaw = decrypt.decrypt(payload.encrypted_session_key);
@@ -97,9 +128,8 @@
                 }
                 const sessionKey = CryptoJS.enc.Latin1.parse(sessionKeyRaw);
 
-                // 2. Decrypt the data with AES-CBC
                 const iv = CryptoJS.enc.Base64.parse(payload.iv);
-                const ciphertext = payload.ciphertext; // It's a base64 string
+                const ciphertext = payload.ciphertext;
                 
                 const decrypted = CryptoJS.AES.decrypt(ciphertext, sessionKey, {
                     iv: iv,
@@ -123,10 +153,18 @@
                     }
                 });
 
+                statusIndicator.textContent = '解密成功';
+                statusIndicator.style.background = 'var(--code-bg)';
+                statusIndicator.style.color = 'green';
+
             } catch (error) {
                 console.error("解密或渲染过程中出错:", error);
-                unlockBtn.textContent = "解密失败";
-                unlockBtn.style.backgroundColor = "red";
+                statusIndicator.textContent = '解密失败';
+                statusIndicator.style.background = 'var(--code-bg)';
+                statusIndicator.style.color = 'red';
+                // Show the login button again if decryption fails, allowing user to re-enter keys
+                unlockBtn.style.display = 'inline-block';
+                unlockBtn.textContent = '解密失败，请重试';
             }
         })();
     });

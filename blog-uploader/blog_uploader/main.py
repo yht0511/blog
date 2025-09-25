@@ -122,9 +122,13 @@ def get_or_setup_public_key():
         click.echo(click.style(f"IMPORTANT: Your new keys have been saved:", fg="yellow"))
         click.echo(f"  - Private Key: {private_key_path}")
         click.echo(f"  - Public Key: {public_key_path}")
-        click.echo(click.style("Please back up your private key in a secure location. It is required for decryption.", fg="red"))
+        click.echo(click.style("--- BEGIN RSA PRIVATE KEY ---", fg="cyan"))
+        click.echo(click.style(private_key.decode('utf-8'), fg="cyan"))
+        click.echo(click.style("---  END RSA PRIVATE KEY  ---", fg="cyan"))
+        click.echo(click.style("\nPlease COPY the private key above and use it on your website for decryption.", fg="red", bold=True))
         
         config["public_key_path"] = public_key_path
+        config["private_key_path"] = private_key_path # Also save private key path for later retrieval
         save_config(config)
         return RSA.import_key(public_key)
     else:
@@ -516,6 +520,24 @@ def list():
 
     console = Console()
     console.print(table)
+
+@cli.command(name="show-private-key")
+def show_private_key():
+    """Displays the configured private key required for decryption."""
+    config = load_config()
+    private_key_path = config.get("private_key_path")
+
+    if not private_key_path or not os.path.exists(private_key_path):
+        click.echo(click.style("Private key path is not configured or the file is missing.", fg="red"))
+        click.echo("Please run the 'new' command and generate a key pair when prompted.")
+        sys.exit(1)
+    
+    with open(private_key_path, 'r') as f:
+        private_key = f.read()
+    
+    click.echo(click.style("Here is the private key required for decryption on your website:", fg="yellow"))
+    click.echo(click.style(private_key, fg="cyan"))
+
 
 if __name__ == '__main__':
     cli()
