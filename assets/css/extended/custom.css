@@ -1,0 +1,46 @@
+.thoughts-entry {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--entry);
+  transition: transform 0.1s;
+}
+
+.thoughts-entry:hover {
+  transform: scale(1.02);
+}
+
+.thoughts-entry .entry-content {
+  margin-top: 0;
+}
+
+.thoughts-entry .entry-footer {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: var(--secondary);
+}
+
+.thoughts-single .post-header {
+  padding-bottom: 10px;
+  text-align: left;
+  margin: 10px 0px;
+}
+
+.thoughts-single .post-content {
+  padding: 20px;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.thoughts-single {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+}
+
+.thoughts-single .post-footer {
+  margin-top: auto;
+  padding-top: 40px;
+}

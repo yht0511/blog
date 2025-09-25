@@ -95,14 +95,6 @@ params:
   # 是否启用图片放大
   fancybox: true
   # 搜索
-  fuseOpts:
-    isCaseSensitive: false
-    shouldSort: true
-    location: 0
-    distance: 1000
-    threshold: 0.0 # 完全匹配。PaperMod 默认为 0.4
-    minMatchCharLength: 0
-    keys: ["title", "permalink", "summary", "content"]
 
   Github:
     enable: true
@@ -206,6 +198,9 @@ params:
 
   # for search
   # https://fusejs.io/api/options.html
+  mainSections:
+    - post
+    - thoughts
   fuseOpts:
     isCaseSensitive: false
     shouldSort: true

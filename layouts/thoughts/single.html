@@ -1,0 +1,55 @@
+{{- define "main" }}
+
+<style>
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    height: 40px;
+    background-color: #af0404;
+    border-radius: 16px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #961f1f;
+  }
+</style>
+
+<article class="post-single thoughts-single">
+  <header class="post-header">
+    {{- if not (.Param "hideMeta") }}
+    <div class="post-meta">
+      {{- partial "post_meta.html" . -}} &nbsp;|&nbsp;
+      <span id="busuanzi_container_page_pv"
+        >阅读量<span id="busuanzi_value_page_pv"></span>次</span
+      >
+    </div>
+    {{- end }}
+  </header>
+  {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param
+  "cover.hidden") | default false }} {{- partial "cover.html" (dict "cxt" .
+  "IsSingle" true "isHidden" $isHidden) }} {{- if .Content }}
+  <div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }} {{- partial
+    "anchored_headings.html" .Content -}} {{- else }}{{ .Content }}{{ end }}
+  </div>
+  {{- end }}
+
+  <footer class="post-footer">
+    {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+    <ul class="post-tags">
+      {{- range ($.GetTerms $tags) }}
+      <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+      {{- end }}
+    </ul>
+    {{- if (.Param "ShowPostNavLinks") }} {{- partial "post_nav_links.html" .
+    -}} {{- end }} {{- if (and site.Params.ShowShareButtons (ne
+    .Params.disableShare true)) }} {{- partial "share_icons.html" . -}} {{- end
+    }}
+  </footer>
+
+  {{- if (.Param "comments") }} {{- partial "comments.html" . }} {{- end }} {{-
+  if .Site.Params.gitalk.enabled }} {{ partial "gitalk.html" . }} {{- end }}
+</article>
+
+{{- end }}{{/* end main */}}
