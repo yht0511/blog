@@ -11,6 +11,8 @@ setup(
         'rich',
         'python-frontmatter',
         'requests',
+        'pycryptodome',
+        'mistune',
     ],
     entry_points={
         'console_scripts': [

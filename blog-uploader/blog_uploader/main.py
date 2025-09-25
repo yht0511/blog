@@ -9,6 +9,12 @@ import platform
 import subprocess
 import re
 import requests
+import hashlib
+import json
+import base64
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.Random import get_random_bytes
 from rich.console import Console
 from rich.table import Table
 
@@ -61,13 +67,79 @@ def open_with_typora(filepath):
         click.style("Could not find Typora automatically.", fg="yellow")
     )
 
+def get_config_path():
+    """Returns the path to the config file."""
+    home_dir = os.path.expanduser("~")
+    return os.path.join(home_dir, ".blog_uploader", "config.json")
+
+def load_config():
+    """Loads the config file."""
+    config_path = get_config_path()
+    if os.path.exists(config_path):
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_config(config):
+    """Saves the config file."""
+    config_path = get_config_path()
+    os.makedirs(os.path.dirname(config_path), exist_ok=True)
+    with open(config_path, 'w') as f:
+        json.dump(config, f, indent=4)
+
+def get_or_setup_public_key():
+    """
+    Gets the public key from config, or guides the user through setting one up.
+    """
+    config = load_config()
+    public_key_path = config.get("public_key_path")
+
+    if public_key_path and os.path.exists(public_key_path):
+        with open(public_key_path, 'r') as f:
+            return RSA.import_key(f.read())
+
+    click.echo("RSA public key not found or configured.")
+    if click.confirm("Do you have an existing RSA public key file to use?"):
+        public_key_path = click.prompt("Please enter the path to your RSA public key", type=click.Path(exists=True, dir_okay=False))
+        config["public_key_path"] = public_key_path
+        save_config(config)
+        with open(public_key_path, 'r') as f:
+            return RSA.import_key(f.read())
+    elif click.confirm("Would you like to generate a new RSA key pair now?"):
+        key = RSA.generate(2048)
+        private_key = key.export_key()
+        public_key = key.publickey().export_key()
+        
+        key_dir = os.path.join(os.path.expanduser("~"), ".blog_uploader")
+        private_key_path = os.path.join(key_dir, "private.pem")
+        public_key_path = os.path.join(key_dir, "public.pem")
+        
+        with open(private_key_path, "wb") as f:
+            f.write(private_key)
+        with open(public_key_path, "wb") as f:
+            f.write(public_key)
+            
+        click.echo(click.style(f"IMPORTANT: Your new keys have been saved:", fg="yellow"))
+        click.echo(f"  - Private Key: {private_key_path}")
+        click.echo(f"  - Public Key: {public_key_path}")
+        click.echo(click.style("Please back up your private key in a secure location. It is required for decryption.", fg="red"))
+        
+        config["public_key_path"] = public_key_path
+        save_config(config)
+        return RSA.import_key(public_key)
+    else:
+        click.echo("Cannot proceed without a public key. Aborting.", err=True)
+        sys.exit(1)
 
 # --- Configuration ---
 # In a real application, this would be loaded from a config file.
 # For now, we'll keep them as constants.
 REPO_URL = "https://github.com/yht0511/blog.git"
+SECRET_REPO_URL = "https://github.com/yht0511/blog-secret.git"
 REPO_NAME = "blog"
+SECRET_REPO_NAME = "blog-secret"
 TEMP_DIR_NAME = "temp_blog"
+SECRET_TEMP_DIR_NAME = "temp_blog_secret"
 CONTENT_PATH = "content/post"
 
 # --- Helper Functions ---
@@ -88,6 +160,23 @@ def get_temp_dir():
         repo = git.Repo(temp_dir)
         repo.remotes.origin.pull()
         click.echo("Repository is up to date.")
+        
+    return temp_dir
+
+def get_secret_repo_dir():
+    """Gets the temporary directory path for the secret repo and ensures it exists."""
+    home_dir = os.path.expanduser("~")
+    temp_dir = os.path.join(home_dir, ".blog_uploader", SECRET_TEMP_DIR_NAME)
+    
+    if not os.path.exists(temp_dir):
+        click.echo(f"Cloning secret repository from {SECRET_REPO_URL}...")
+        git.Repo.clone_from(SECRET_REPO_URL, temp_dir)
+        click.echo(f"Secret repository cloned to {temp_dir}")
+    else:
+        click.echo("Pulling latest changes from secret repository...")
+        repo = git.Repo(temp_dir)
+        repo.remotes.origin.pull()
+        click.echo("Secret repository is up to date.")
         
     return temp_dir
 
@@ -171,6 +260,46 @@ def preprocess_markdown_content(content, base_dir):
     click.echo("Successfully replaced local image paths with remote URLs.")
     return updated_content
 
+def process_strikethrough_content(content):
+    """
+    Finds all strikethrough content, asks the user if they want to separate it,
+    and replaces it with a placeholder.
+    """
+    # This regex finds content wrapped in ~~...~~
+    strikethrough_pattern = re.compile(r'~~(.+?)~~', re.DOTALL)
+    
+    matches = [m for m in strikethrough_pattern.finditer(content)]
+    
+    if not matches:
+        return content, None
+
+    click.echo(f"Found {len(matches)} sections with strikethrough text.")
+    if not click.confirm("Do you want to separate this content into the secret repository?", default=True):
+        return content, None
+
+    secret_content = {}
+    clean_content = content
+    
+    for match in reversed(matches):
+        original_text = match.group(0) # e.g., ~~secret text~~
+        inner_text = match.group(1)    # e.g., secret text
+        
+        # We use a hash of the original text to create a unique ID
+        content_hash = hashlib.sha256(original_text.encode('utf-8')).hexdigest()
+        
+        # Store the original markdown (including the ~~ markers)
+        secret_content[content_hash] = original_text
+        
+        # Replace with a placeholder span
+        placeholder = f'<span class="secret-placeholder" data-id="{content_hash}"></span>'
+        
+        # Replace the content from the end to the beginning to not mess up indices
+        start, end = match.span()
+        clean_content = clean_content[:start] + placeholder + clean_content[end:]
+
+    click.echo("Separated secret content and replaced with placeholders.")
+    return clean_content, secret_content
+
 # --- CLI Commands ---
 
 @click.group()
@@ -184,6 +313,7 @@ def cli():
 def new(filepath):
     """Create a new blog post from a file."""
     temp_dir = get_temp_dir()
+    secret_repo_dir = get_secret_repo_dir() # Ensure secret repo is ready
 
     # 0. Preprocess the markdown file to upload images
     click.echo("Preprocessing markdown file...")
@@ -222,7 +352,65 @@ def new(filepath):
         shutil.rmtree(new_post_path)
         return
 
-    # 5. Read the title and rename the directory
+    # 5. Read the title and process secret content
+    post = frontmatter.load(index_md_path)
+    title = post.metadata.get("title", "")
+    
+    if not title:
+        click.echo("Could not find title in the markdown file. Aborting.", err=True)
+        shutil.rmtree(new_post_path)
+        return
+
+    clean_content, secret_content = process_strikethrough_content(post.content)
+    
+    if secret_content:
+        # --- Hybrid Encryption (RSA + AES-CBC) ---
+        public_key = get_or_setup_public_key()
+        
+        # 1. Generate a one-time AES session key
+        session_key = get_random_bytes(16) # 128-bit key
+        
+        # 2. Encrypt the data with AES-CBC
+        cipher_aes = AES.new(session_key, AES.MODE_CBC)
+        iv = cipher_aes.iv
+        data_to_encrypt = json.dumps(secret_content).encode('utf-8')
+        
+        # Add PKCS7 padding
+        padding_len = AES.block_size - len(data_to_encrypt) % AES.block_size
+        padding = bytes([padding_len]) * padding_len
+        padded_data = data_to_encrypt + padding
+        
+        ciphertext = cipher_aes.encrypt(padded_data)
+        
+        # 3. Encrypt the AES session key with RSA
+        cipher_rsa = PKCS1_OAEP.new(public_key)
+        encrypted_session_key = cipher_rsa.encrypt(session_key)
+        
+        # 4. Prepare payload for storage
+        payload = {
+            'encrypted_session_key': base64.b64encode(encrypted_session_key).decode('utf-8'),
+            'iv': base64.b64encode(iv).decode('utf-8'),
+            'ciphertext': base64.b64encode(ciphertext).decode('utf-8')
+        }
+        
+        title_hash = hashlib.sha256(title.encode('utf-8')).hexdigest()
+        secret_filename = f"{title_hash}.json"
+        secret_filepath = os.path.join(secret_repo_dir, secret_filename)
+        
+        with open(secret_filepath, 'w') as f:
+            json.dump(payload, f)
+        
+        click.echo(f"Secret content encrypted and saved to {secret_filepath}")
+        
+        # Commit and push the secret content
+        commit_and_push(secret_repo_dir, f"Add secret for post: {title}")
+        
+        # Update the main post file with the clean content
+        post.content = clean_content
+        with open(index_md_path, 'w', encoding='utf-8') as f:
+            f.write(frontmatter.dumps(post))
+
+    # 6. Read the title and rename the directory
     title = ""
     with open(index_md_path, "r", encoding='utf-8') as f:
         for line in f:
@@ -249,7 +437,7 @@ def new(filepath):
     os.rename(new_post_path, final_post_path)
     click.echo(f"Post renamed to '{safe_title}'.")
 
-    # 6. Run hugo, commit and push
+    # 7. Run hugo, commit and push
     click.echo("Running hugo build...")
     os.chdir(temp_dir)
     os.system('hugo')

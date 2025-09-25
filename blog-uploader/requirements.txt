@@ -1,0 +1,7 @@
+click
+gitpython
+python-frontmatter
+rich
+requests
+pycryptodome
+mistune

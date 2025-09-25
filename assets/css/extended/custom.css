@@ -44,3 +44,125 @@
   margin-top: auto;
   padding-top: 40px;
 }
+
+/* --- Secret Content Unlock Styles --- */
+
+#unlock-secrets-btn {
+    background: var(--tertiary);
+    color: var(--content);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 16px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin-left: 10px;
+}
+
+#unlock-secrets-btn:hover {
+    background: var(--code-bg);
+    border-color: var(--secondary);
+}
+
+#secret-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#secret-modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+#secret-modal-content {
+    background-color: var(--entry);
+    padding: 25px 30px;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+#secret-modal.show #secret-modal-content {
+    transform: scale(1);
+}
+
+#secret-modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--content);
+    font-weight: 600;
+}
+
+#secret-modal-content label {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: var(--secondary);
+}
+
+#secret-modal-content input[type="password"],
+#secret-modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background-color: var(--code-bg);
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 1em;
+}
+
+#secret-modal-content textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#secret-modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#secret-modal-content button {
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+#save-keys-btn {
+    background-color: var(--tertiary);
+    color: var(--content);
+    border-color: var(--border);
+}
+
+#save-keys-btn:hover {
+    background: var(--code-bg);
+    border-color: var(--secondary);
+}
+
+#close-modal-btn {
+    background-color: transparent;
+    color: var(--content);
+}
+
+#close-modal-btn:hover {
+    background-color: var(--tertiary);
+}

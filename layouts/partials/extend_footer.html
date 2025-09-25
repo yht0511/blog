@@ -1,0 +1,133 @@
+<button id="unlock-secrets-btn">管理员</button>
+
+<div id="secret-modal">
+    <div id="secret-modal-content">
+        <h2>输入解密密钥</h2>
+        <label for="github-token">GitHub API Token:</label>
+        <input type="password" id="github-token" name="github-token">
+        <label for="rsa-private-key">RSA Private Key:</label>
+        <textarea id="rsa-private-key" name="rsa-private-key" rows="5"></textarea>
+        <div id="secret-modal-buttons">
+            <button id="close-modal-btn">关闭</button>
+            <button id="save-keys-btn">保存并刷新</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/js-sha256@0.11.0/src/sha256.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const unlockBtn = document.getElementById('unlock-secrets-btn');
+        const modal = document.getElementById('secret-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const saveKeysBtn = document.getElementById('save-keys-btn');
+
+        unlockBtn.addEventListener('click', () => {
+            modal.classList.add('show');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('show');
+        });
+
+        saveKeysBtn.addEventListener('click', () => {
+            const githubToken = document.getElementById('github-token').value;
+            const privateKey = document.getElementById('rsa-private-key').value;
+
+            if (githubToken && privateKey) {
+                localStorage.setItem('githubToken', githubToken);
+                localStorage.setItem('rsaPrivateKey', privateKey);
+                alert('密钥已保存！');
+                modal.classList.remove('show');
+                location.reload(); // Reload to decrypt content
+            } else {
+                alert('请填写所有字段！');
+            }
+        });
+
+        // Auto-run on page load
+        (async function decryptContent() {
+            const githubToken = localStorage.getItem('githubToken');
+            const privateKey = localStorage.getItem('rsaPrivateKey');
+
+            if (!githubToken || !privateKey) {
+                console.log("密钥未找到，无法解密。");
+                return;
+            }
+
+            const placeholders = document.querySelectorAll('.secret-placeholder');
+            if (placeholders.length === 0) {
+                return;
+            }
+
+            const titleElement = document.querySelector('.post-title');
+            if (!titleElement) {
+                console.log("文章标题未找到，无法确定私密文件名。");
+                return;
+            }
+            const title = titleElement.textContent.trim();
+            const titleHash = sha256(title);
+            const secretFileName = `${titleHash}.json`;
+
+            const url = `https://api.github.com/repos/yht0511/blog-secret/contents/${secretFileName}`;
+
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `token ${githubToken}`,
+                        'Accept': 'application/vnd.github.v3.raw'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`GitHub API request failed: ${response.statusText}`);
+                }
+
+                const payload = await response.json();
+
+                // 1. Decrypt the AES session key with RSA
+                const decrypt = new JSEncrypt();
+                decrypt.setPrivateKey(privateKey);
+                const sessionKeyRaw = decrypt.decrypt(payload.encrypted_session_key);
+                if (!sessionKeyRaw) {
+                    throw new Error("解密会话密钥失败。请检查你的RSA私钥。");
+                }
+                const sessionKey = CryptoJS.enc.Latin1.parse(sessionKeyRaw);
+
+                // 2. Decrypt the data with AES-CBC
+                const iv = CryptoJS.enc.Base64.parse(payload.iv);
+                const ciphertext = payload.ciphertext; // It's a base64 string
+                
+                const decrypted = CryptoJS.AES.decrypt(ciphertext, sessionKey, {
+                    iv: iv,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                });
+
+                const decryptedJson = decrypted.toString(CryptoJS.enc.Utf8);
+                if (!decryptedJson) {
+                    throw new Error("AES解密数据失败。");
+                }
+                
+                const secretContentMap = JSON.parse(decryptedJson);
+
+                placeholders.forEach(placeholder => {
+                    const contentHash = placeholder.getAttribute('data-id');
+                    if (secretContentMap[contentHash]) {
+                        const secretMarkdown = secretContentMap[contentHash];
+                        const secretHtml = marked.parse(secretMarkdown);
+                        placeholder.outerHTML = secretHtml;
+                    }
+                });
+
+            } catch (error) {
+                console.error("解密或渲染过程中出错:", error);
+                unlockBtn.textContent = "解密失败";
+                unlockBtn.style.backgroundColor = "red";
+            }
+        })();
+    });
+</script>
