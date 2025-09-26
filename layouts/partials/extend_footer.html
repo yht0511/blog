@@ -148,7 +148,7 @@
                     const contentHash = placeholder.getAttribute('data-id');
                     if (secretContentMap[contentHash]) {
                         const secretMarkdown = secretContentMap[contentHash];
-                        const secretHtml = marked.parse(secretMarkdown);
+                        const secretHtml = marked.parseInline(secretMarkdown);
                         placeholder.outerHTML = secretHtml;
                     }
                 });
