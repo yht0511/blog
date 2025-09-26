@@ -4,6 +4,7 @@ import shutil
 import click
 import git
 import time
+import datetime
 import frontmatter
 import platform
 import subprocess
@@ -12,6 +13,7 @@ import requests
 import hashlib
 import json
 import base64
+import builtins
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES, PKCS1_v1_5
 from Crypto.Random import get_random_bytes
@@ -234,7 +236,7 @@ def preprocess_markdown_content(content, base_dir):
         if os.path.exists(abs_path):
             absolute_paths.append(abs_path)
         else:
-            click.echo(f"Warning: Image not found at {abs_path}", fg="yellow")
+            click.echo(click.style(f"Warning: Image not found at {abs_path}", fg="yellow"))
 
     if not absolute_paths:
         return content
@@ -358,7 +360,10 @@ def new(filepath):
         return
 
     # 5. Read the title and process secret content
-    post = frontmatter.load(index_md_path)
+    with open(index_md_path, "r", encoding='utf-8') as f:
+        full_content_string = f.read()
+    
+    post = frontmatter.loads(full_content_string)
     title = post.metadata.get("title", "")
     
     if not title:
@@ -395,7 +400,7 @@ def new(filepath):
             'ciphertext': base64.b64encode(ciphertext).decode('utf-8')
         }
         
-        title_hash = hashlib.sha256(title.encode('utf-8')).hexdigest()
+        title_hash = hashlib.sha256(str(title).encode('utf-8')).hexdigest()
         secret_filename = f"{title_hash}.json"
         secret_filepath = os.path.join(secret_repo_dir, secret_filename)
         
@@ -407,10 +412,18 @@ def new(filepath):
         # Commit and push the secret content
         commit_and_push(secret_repo_dir, f"Add secret for post: {title}")
         
-        # Update the main post file with the clean content
-        post.content = clean_content
-        with open(index_md_path, 'w', encoding='utf-8') as f:
-            f.write(frontmatter.dumps(post))
+        # Update the main post file with the clean content, preserving original frontmatter
+        parts = full_content_string.split('---', 2)
+        if len(parts) >= 3:
+            raw_frontmatter = parts[1]
+            new_full_content = f"---{raw_frontmatter}---\n{clean_content}"
+            with open(index_md_path, 'w', encoding='utf-8') as f:
+                f.write(new_full_content)
+        else:
+            # Fallback to original method if splitting fails
+            post.content = clean_content
+            with open(index_md_path, 'w', encoding='utf-8') as f:
+                f.write(frontmatter.dumps(post))
 
     # 6. Read the title and rename the directory
     title = ""
@@ -473,8 +486,8 @@ def remove(name):
     else:
         click.echo("Aborted.")
 
-@cli.command()
-def list():
+@cli.command(name="list")
+def list_posts():
     """List all available blog posts in a table."""
     temp_dir = get_temp_dir()
     posts_dir = os.path.join(temp_dir, CONTENT_PATH)
@@ -502,17 +515,22 @@ def list():
                 with open(index_path, 'r', encoding='utf-8') as f:
                     post = frontmatter.load(f)
                     
-                title = post.metadata.get('title', 'N/A')
-                date = post.metadata.get('date', 'N/A')
-                if hasattr(date, 'strftime'):
-                    date = date.strftime('%Y-%m-%d')
-                
-                tags = post.metadata.get('categories', [])
-                tags_str = ", ".join(tags) if tags else "N/A"
+                title = str(post.metadata.get('title', 'N/A'))
+                date_obj = post.metadata.get('date')
+                date_str = 'N/A'
+                if isinstance(date_obj, (datetime.date, datetime.datetime)):
+                    date_str = date_obj.strftime('%Y-%m-%d')
+                elif date_obj:
+                    date_str = str(date_obj)
+
+                tags = post.metadata.get('categories')
+                tags_str = "N/A"
+                if isinstance(tags, builtins.list):
+                    tags_str = ", ".join(map(str, tags))
                 
                 word_count = len(post.content)
                 
-                table.add_row(title, str(date), tags_str, str(word_count))
+                table.add_row(title, date_str, tags_str, str(word_count))
             except Exception as e:
                 table.add_row(f"[red]Error parsing {post_name}[/red]", str(e), "", "")
 

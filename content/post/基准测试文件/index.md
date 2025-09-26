@@ -1,12 +1,11 @@
 ---
-categories:
-- 测试
+title: "基准测试文件"
+description: "测试博客功能用的文件."
 date: 2022-05-18T18:07:59+0800
-description: 测试博客功能用的文件.
-draft: false
 lastmod: 2022-05-18T18:07:59+0800
+categories: ["测试"]
 mermaid: true
-title: 基准测试文件
+draft: false
 ---
 
 # 测试
