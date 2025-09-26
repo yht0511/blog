@@ -126,7 +126,7 @@
                 if (!sessionKeyRaw) {
                     throw new Error("解密会话密钥失败。请检查你的RSA私钥。");
                 }
-                const sessionKey = CryptoJS.enc.Latin1.parse(sessionKeyRaw);
+                const sessionKey = CryptoJS.enc.Base64.parse(sessionKeyRaw);
 
                 const iv = CryptoJS.enc.Base64.parse(payload.iv);
                 const ciphertext = payload.ciphertext;

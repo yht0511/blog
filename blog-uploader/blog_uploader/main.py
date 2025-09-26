@@ -386,7 +386,7 @@ def new(filepath):
         
         # 3. Encrypt the AES session key with RSA
         cipher_rsa = PKCS1_v1_5.new(public_key)
-        encrypted_session_key = cipher_rsa.encrypt(session_key)
+        encrypted_session_key = cipher_rsa.encrypt(base64.b64encode(session_key))
         
         # 4. Prepare payload for storage
         payload = {
