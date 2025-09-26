@@ -526,7 +526,6 @@ def list_posts():
                 tags = post.metadata.get('categories')
                 tags_str = "N/A"
                 if isinstance(tags, builtins.list):
-                    tags_str = ", ".join(map(str, tags))
                 
                 word_count = len(post.content)
                 
