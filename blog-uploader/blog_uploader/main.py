@@ -13,8 +13,9 @@ import hashlib
 import json
 import base64
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import AES, PKCS1_OAEP
+from Crypto.Cipher import AES, PKCS1_v1_5
 from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad
 from rich.console import Console
 from rich.table import Table
 
@@ -107,7 +108,7 @@ def get_or_setup_public_key():
             return RSA.import_key(f.read())
     elif click.confirm("Would you like to generate a new RSA key pair now?"):
         key = RSA.generate(2048)
-        private_key = key.export_key()
+        private_key = key.export_key(pkcs=1) # Export in PKCS#1 format for JSEncrypt compatibility
         public_key = key.publickey().export_key()
         
         key_dir = os.path.join(os.path.expanduser("~"), ".blog_uploader")
@@ -379,15 +380,12 @@ def new(filepath):
         iv = cipher_aes.iv
         data_to_encrypt = json.dumps(secret_content).encode('utf-8')
         
-        # Add PKCS7 padding
-        padding_len = AES.block_size - len(data_to_encrypt) % AES.block_size
-        padding = bytes([padding_len]) * padding_len
-        padded_data = data_to_encrypt + padding
-        
+        # Pad the data to be a multiple of the block size using PKCS7
+        padded_data = pad(data_to_encrypt, AES.block_size)
         ciphertext = cipher_aes.encrypt(padded_data)
         
         # 3. Encrypt the AES session key with RSA
-        cipher_rsa = PKCS1_OAEP.new(public_key)
+        cipher_rsa = PKCS1_v1_5.new(public_key)
         encrypted_session_key = cipher_rsa.encrypt(session_key)
         
         # 4. Prepare payload for storage
