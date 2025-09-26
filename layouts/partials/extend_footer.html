@@ -6,9 +6,32 @@
         padding: 1px 3px;
         border-radius: 3px;
     }
+
+    #admin-login-container {
+        position: fixed;
+        bottom: 15px;
+        right: 15px;
+        z-index: 1000;
+    }
+
+    #unlock-secrets-btn {
+        background: none;
+        border: none;
+        color: var(--secondary);
+        cursor: pointer;
+        font-size: 12px;
+        opacity: 0.6;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    #unlock-secrets-btn:hover {
+        opacity: 1;
+    }
 </style>
 
-<button id="unlock-secrets-btn">管理员登录</button>
+<div id="admin-login-container">
+    <button id="unlock-secrets-btn">管理员登录</button>
+</div>
 
 <div id="secret-modal">
     <div id="secret-modal-content">
