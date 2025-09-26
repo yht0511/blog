@@ -1,8 +1,8 @@
 ---
 title: "基准测试文件"
 description: "测试博客功能用的文件."
-date: 2022-05-18T18:07:59+0800
-lastmod: 2022-05-18T18:07:59+0800
+date: 2022-05-18T18:07:59+08:00
+lastmod: 2022-05-18T18:07:59+08:00
 categories: ["测试"]
 mermaid: true
 draft: false
