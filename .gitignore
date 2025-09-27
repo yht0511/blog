@@ -4,3 +4,4 @@ dist/
 __pycache__/
 public/
 .DS_Store
+test-thought.md
