@@ -266,7 +266,7 @@ def preprocess_markdown_content(content, base_dir):
     click.echo("Successfully replaced local image paths with remote URLs.")
     return updated_content
 
-def process_strikethrough_content(content):
+def process_strikethrough_content(title_hash, content):
     """
     Finds all strikethrough content, asks the user if they want to separate it,
     and replaces it with a placeholder.
@@ -297,7 +297,7 @@ def process_strikethrough_content(content):
         secret_content[content_hash] = original_text
         
         # Replace with a placeholder span
-        placeholder = f'<span class="secret-placeholder" data-id="{content_hash}"></span>'
+        placeholder = f'<span class="secret-placeholder" data-id="{content_hash}" title-hash="{title_hash}"></span>'
         
         # Replace the content from the end to the beginning to not mess up indices
         start, end = match.span()
@@ -305,6 +305,12 @@ def process_strikethrough_content(content):
 
     click.echo("Separated secret content and replaced with placeholders.")
     return clean_content, secret_content
+
+def process_filename(filename):
+    illegal_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    for char in illegal_chars:
+        filename = filename.replace(char, '')
+    return filename.strip()
 
 # --- CLI Commands ---
 
@@ -374,8 +380,9 @@ def new(filepath, content_type):
         click.echo("Could not find title in the markdown file. Aborting.", err=True)
         shutil.rmtree(new_post_path)
         return
-
-    clean_content, secret_content = process_strikethrough_content(post.content)
+    
+    title_hash = hashlib.sha256(str(title).encode('utf-8')).hexdigest()
+    clean_content, secret_content = process_strikethrough_content(title_hash,post.content)
     
     if secret_content:
         # --- Hybrid Encryption (RSA + AES-CBC) ---
@@ -404,7 +411,6 @@ def new(filepath, content_type):
             'ciphertext': base64.b64encode(ciphertext).decode('utf-8')
         }
         
-        title_hash = hashlib.sha256(str(title).encode('utf-8')).hexdigest()
         secret_filename = f"{title_hash}.json"
         secret_filepath = os.path.join(secret_repo_dir, secret_filename)
         
@@ -472,6 +478,7 @@ def remove(name, content_type):
     if content_type not in ['post', 'thought']:
         click.echo(f"Invalid content type '{content_type}'. Please use 'post' or 'thought'.", err=True)
         return
+    name = process_filename(name)
     temp_dir = get_temp_dir()
     content_path = os.path.join("content", content_type)
     post_path = os.path.join(temp_dir, content_path, name)

@@ -99,6 +99,11 @@
             // If keys are present, hide the login button.
             unlockBtn.style.display = 'none';
 
+            // Only run on post or thought pages
+            if (!window.location.pathname.startsWith('/post/') && !window.location.pathname.startsWith('/thought/')) {
+                return;
+            }
+
             const placeholders = document.querySelectorAll('.secret-placeholder');
             // If there's no secret content on this page, do nothing.
             if (placeholders.length === 0) {
