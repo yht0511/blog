@@ -469,6 +469,9 @@ def new(filepath, content_type):
 @click.option('--type', 'content_type', default='post', help='The type of content to remove (e.g., post, thought).')
 def remove(name, content_type):
     """Remove a blog post by its folder name."""
+    if content_type not in ['post', 'thought']:
+        click.echo(f"Invalid content type '{content_type}'. Please use 'post' or 'thought'.", err=True)
+        return
     temp_dir = get_temp_dir()
     content_path = os.path.join("content", content_type)
     post_path = os.path.join(temp_dir, content_path, name)
