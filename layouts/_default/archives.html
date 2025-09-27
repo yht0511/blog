@@ -50,7 +50,7 @@
       {{- range .Pages }} {{- if eq .Kind "page" }}
       <div class="archive-entry">
         <h3 class="archive-entry-title entry-hint-parent">
-          {{- if eq .Type "thoughts" -}} {{ .Content | plainify | truncate 20 }}
+          {{- if eq .Type "thought" -}} {{ .Content | plainify | truncate 20 }}
           {{- else -}} {{- .Title | markdownify -}} {{- end -}} {{- if .Draft }}
           <span class="entry-hint" title="Draft">
             <svg

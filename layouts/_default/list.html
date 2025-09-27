@@ -39,8 +39,8 @@ $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }} {{- end }} {{-
 $paginator := .Paginate $pages }} {{- if and .IsHome site.Params.homeInfoParams
 (eq $paginator.PageNumber 1) }} {{- partial "home_info.html" . }} {{- end }} {{-
 $term := .Data.Term }} {{- range $index, $page := $paginator.Pages }} {{- if eq
-.Type "thoughts" }}
-<article class="post-entry thoughts-entry">
+.Type "thought" }}
+<article class="post-entry thought-entry">
   <div class="entry-content">{{ .Content }}</div>
   <footer class="entry-footer">{{- partial "post_meta.html" . -}}</footer>
   <a
@@ -52,7 +52,8 @@ $term := .Data.Term }} {{- range $index, $page := $paginator.Pages }} {{- if eq
 {{- else }} {{- $class := "post-entry" }} {{- $user_preferred := or
 site.Params.disableSpecial1stPost site.Params.homeInfoParams }} {{- if (and
 $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred)) }}
-{{- $class = "first-entry" }} {{- else if $term }} {{- $class = "post-entry tag-entry" }} {{- end }}
+{{- $class = "first-entry" }} {{- else if $term }} {{- $class = "post-entry
+tag-entry" }} {{- end }}
 
 <article class="{{ $class }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param

@@ -147,7 +147,6 @@ REPO_NAME = "blog"
 SECRET_REPO_NAME = "blog-secret"
 TEMP_DIR_NAME = "temp_blog"
 SECRET_TEMP_DIR_NAME = "temp_blog_secret"
-CONTENT_PATH = "content/post"
 
 # --- Helper Functions ---
 
@@ -317,9 +316,14 @@ def cli():
 
 @cli.command()
 @click.argument('filepath', type=click.Path(exists=True))
-def new(filepath):
+@click.option('--type', 'content_type', default='post', help='The type of content to create (e.g., post, thought).')
+def new(filepath, content_type):
     """Create a new blog post from a file."""
+    if content_type not in ['post', 'thought']:
+        click.echo(f"Invalid content type '{content_type}'. Please use 'post' or 'thought'.", err=True)
+        return
     temp_dir = get_temp_dir()
+    content_path = os.path.join("content", content_type)
     secret_repo_dir = get_secret_repo_dir() # Ensure secret repo is ready
 
     # 0. Preprocess the markdown file to upload images
@@ -331,14 +335,14 @@ def new(filepath):
     content = preprocess_markdown_content(original_content, source_dir)
     
     # 1. Create a new post using Hugo
-    click.echo("Creating new post with Hugo...")
+    click.echo(f"Creating new {content_type} with Hugo...")
     post_dir_name = "untitled-post"
-    new_post_path = os.path.join(temp_dir, CONTENT_PATH, post_dir_name)
+    new_post_path = os.path.join(temp_dir, content_path, post_dir_name)
     
     # Hugo command needs to be run from within the repo directory
     original_cwd = os.getcwd()
     os.chdir(temp_dir)
-    os.system(f'hugo new {CONTENT_PATH}/{post_dir_name}/index.md')
+    os.system(f'hugo new {content_type}/{post_dir_name}/index.md')
     os.chdir(original_cwd)
 
     # 2. Append content from the source file
@@ -350,10 +354,10 @@ def new(filepath):
     
     # 3. Open with Typora
     open_with_typora(index_md_path)
-    click.echo(f"Please edit the post file to set the title: {index_md_path}")
+    click.echo(f"Please edit the post file to set the headers: {index_md_path}")
     
     # 4. Prompt user to confirm after editing
-    if not click.confirm("Have you finished editing and set the title?"):
+    if not click.confirm("Have you finished editing and set the headers?"):
         click.echo("Aborted.")
         # Clean up the created directory
         shutil.rmtree(new_post_path)
@@ -440,7 +444,7 @@ def new(filepath):
 
     # Sanitize title to be a valid directory name
     safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '_', '-')).rstrip()
-    final_post_path = os.path.join(temp_dir, CONTENT_PATH, safe_title)
+    final_post_path = os.path.join(temp_dir, content_path, safe_title)
 
     if os.path.exists(final_post_path):
         if not click.confirm(f"Post '{safe_title}' already exists. Overwrite?"):
@@ -462,10 +466,12 @@ def new(filepath):
 
 @cli.command()
 @click.argument('name')
-def remove(name):
+@click.option('--type', 'content_type', default='post', help='The type of content to remove (e.g., post, thought).')
+def remove(name, content_type):
     """Remove a blog post by its folder name."""
     temp_dir = get_temp_dir()
-    post_path = os.path.join(temp_dir, CONTENT_PATH, name)
+    content_path = os.path.join("content", content_type)
+    post_path = os.path.join(temp_dir, content_path, name)
 
     if not os.path.exists(post_path):
         click.echo(f"Error: Post '{name}' not found.", err=True)
@@ -487,54 +493,69 @@ def remove(name):
         click.echo("Aborted.")
 
 @cli.command(name="list")
-def list_posts():
+@click.option('--type', 'content_type', default=None, help='The type of content to list (e.g., post, thought). Lists all types if not specified.')
+def list_posts(content_type):
     """List all available blog posts in a table."""
     temp_dir = get_temp_dir()
-    posts_dir = os.path.join(temp_dir, CONTENT_PATH)
     
-    if not os.path.exists(posts_dir):
-        click.echo("Posts directory not found.", err=True)
-        return
-        
-    posts = [d for d in os.listdir(posts_dir) if os.path.isdir(os.path.join(posts_dir, d))]
-    
-    if not posts:
-        click.echo("No posts found.")
-        return
+    content_types_to_list = ['post', 'thought']
+    if content_type:
+        if content_type in content_types_to_list:
+            content_types_to_list = [content_type]
+        else:
+            click.echo(f"Invalid content type '{content_type}'. Please use 'post' or 'thought'.", err=True)
+            return
 
-    table = Table(title="Blog Posts")
+    table = Table(title="Blog Content")
     table.add_column("Title", style="cyan", no_wrap=True)
+    table.add_column("Type", style="blue")
     table.add_column("Date", style="magenta")
     table.add_column("Tags", style="green")
     table.add_column("Word Count", justify="right", style="yellow")
 
-    for post_name in sorted(posts):
-        index_path = os.path.join(posts_dir, post_name, "index.md")
-        if os.path.exists(index_path):
-            try:
-                with open(index_path, 'r', encoding='utf-8') as f:
-                    post = frontmatter.load(f)
-                    
-                title = str(post.metadata.get('title', 'N/A'))
-                date_obj = post.metadata.get('date')
-                date_str = 'N/A'
-                if isinstance(date_obj, (datetime.date, datetime.datetime)):
-                    date_str = date_obj.strftime('%Y-%m-%d')
-                elif date_obj:
-                    date_str = str(date_obj)
+    found_content = False
+    for c_type in content_types_to_list:
+        content_dir = os.path.join(temp_dir, "content", c_type)
+        
+        if not os.path.exists(content_dir):
+            continue
+            
+        items = [d for d in os.listdir(content_dir) if os.path.isdir(os.path.join(content_dir, d))]
+        
+        if items:
+            found_content = True
 
-                tags = post.metadata.get('categories')
-                tags_str = "N/A"
-                if isinstance(tags, builtins.list):
-                    tags_str = ", ".join(str(tag) for tag in tags)
-                elif tags:
-                    tags_str = str(tags)
-                
-                word_count = len(post.content)
-                
-                table.add_row(title, date_str, tags_str, str(word_count))
-            except Exception as e:
-                table.add_row(f"[red]Error parsing {post_name}[/red]", str(e), "", "")
+        for item_name in sorted(items):
+            index_path = os.path.join(content_dir, item_name, "index.md")
+            if os.path.exists(index_path):
+                try:
+                    with open(index_path, 'r', encoding='utf-8') as f:
+                        post = frontmatter.load(f)
+                        
+                    title = str(post.metadata.get('title', 'N/A'))
+                    date_obj = post.metadata.get('date')
+                    date_str = 'N/A'
+                    if isinstance(date_obj, (datetime.date, datetime.datetime)):
+                        date_str = date_obj.strftime('%Y-%m-%d')
+                    elif date_obj:
+                        date_str = str(date_obj)
+
+                    tags = post.metadata.get('categories')
+                    tags_str = "N/A"
+                    if isinstance(tags, builtins.list):
+                        tags_str = ", ".join(str(tag) for tag in tags)
+                    elif tags:
+                        tags_str = str(tags)
+                    
+                    word_count = len(post.content)
+                    
+                    table.add_row(title, c_type, date_str, tags_str, str(word_count))
+                except Exception as e:
+                    table.add_row(f"[red]Error parsing {item_name}[/red]", c_type, str(e), "", "")
+
+    if not found_content:
+        click.echo("No content found.")
+        return
 
     console = Console()
     console.print(table)

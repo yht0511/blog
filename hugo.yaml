@@ -200,7 +200,7 @@ params:
   # https://fusejs.io/api/options.html
   mainSections:
     - post
-    - thoughts
+    - thought
   fuseOpts:
     isCaseSensitive: false
     shouldSort: true
