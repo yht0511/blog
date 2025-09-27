@@ -126,12 +126,12 @@
                 }
             }
             console.log("Located title element:", titleElement);
-
+            let title;
             if (titleElement) {
-                const title = titleElement.textContent.trim();
+                title = titleElement.textContent.trim();
             }else{
                 let ogTitle = document.querySelector('meta[property="og:title"]');
-                const title = ogTitle ? ogTitle.getAttribute('content') : null;
+                title = ogTitle ? ogTitle.getAttribute('content') : null;
             }
             if(!title){
                 statusIndicator.textContent = '错误：找不到标题';
