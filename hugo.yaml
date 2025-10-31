@@ -172,8 +172,6 @@ params:
       url: 'https://github.com/yht0511'
     - name: email
       url: 'mailto:admin@teclab.org.cn'
-    - name: QQ
-      url: 'tencent://message/?uin=341065586&Site=qq&Menu=yes'
 
   # 站长验证
   analytics:
