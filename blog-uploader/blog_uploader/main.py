@@ -14,6 +14,7 @@ import hashlib
 import json
 import base64
 import builtins
+from slugify import slugify
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES, PKCS1_v1_5
 from Crypto.Random import get_random_bytes
@@ -306,12 +307,6 @@ def process_strikethrough_content(title_hash, content):
     click.echo("Separated secret content and replaced with placeholders.")
     return clean_content, secret_content
 
-def process_filename(filename):
-    illegal_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
-    for char in illegal_chars:
-        filename = filename.replace(char, '')
-    return filename.strip()
-
 # --- CLI Commands ---
 
 @click.group()
@@ -449,7 +444,7 @@ def new(filepath, content_type):
         return
 
     # Sanitize title to be a valid directory name
-    safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '_', '-')).rstrip()
+    safe_title = slugify(title)
     final_post_path = os.path.join(temp_dir, content_path, safe_title)
 
     if os.path.exists(final_post_path):
@@ -478,7 +473,7 @@ def remove(name, content_type):
     if content_type not in ['post', 'thought']:
         click.echo(f"Invalid content type '{content_type}'. Please use 'post' or 'thought'.", err=True)
         return
-    name = process_filename(name)
+    name = slugify(name)
     temp_dir = get_temp_dir()
     content_path = os.path.join("content", content_type)
     post_path = os.path.join(temp_dir, content_path, name)

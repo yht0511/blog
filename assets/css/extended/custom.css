@@ -166,3 +166,14 @@
 #close-modal-btn:hover {
   background-color: var(--tertiary);
 }
+
+/* custom.css */
+
+/* 方案A：专门针对被错误地套上代码块样式的数学公式 */
+/* 移除不必要的内边距，让公式有更多空间 */
+.katex-display,
+.MathJax_Display {
+    padding: 10; 
+    overflow-y: hidden !important;
+    /* overflow: hidden !important; */
+}

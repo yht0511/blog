@@ -39,7 +39,10 @@ $$\forall w, i, j \quad \left\| \nabla f_i(w) - \nabla f_j(w) \right\| \le d_{ij
 
 深度神经网络不能直接用之前的(9),因为推导过程基于凸函数性质.
 
-$$ \left\| \nabla f_i(w) - \nabla f_j(w) \right\| \le c_1 \left\| {\Sigma'}_{L}(z_i^{(L)}) \nabla f_i^{(L)}(w) - {\Sigma'}_{L}(z_j^{(L)}) \nabla f_j^{(L)}(w) \right\| + c_2 $$
+{{< math >}}
+\left\| \nabla f_i(w) - \nabla f_j(w) \right\| \le c_1 \left\| {\Sigma'}_{L}(z_i^{(L)}) \nabla f_i^{(L)}(w) - {\Sigma'}_{L}(z_j^{(L)}) \nabla f_j^{(L)}(w) \right\| + c_2
+{{< /math >}}
+
 
 这个的意思就是可以根据最后一层的梯度差来估计整体的梯度差.原理: 拿模型提取后的特征判断相似度.一边训练一边找代表性集合.训练过程中需要不断重新选择子集.
 
